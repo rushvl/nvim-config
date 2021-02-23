@@ -1,32 +1,64 @@
 call plug#begin(stdpath('data'))
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'preservim/nerdtree'
-Plug 'uiiaoo/java-syntax.vim'
-Plug 'numirias/semshi'
+Plug 'preservim/nerdtree'                                                               " browse through directories
+Plug 'uiiaoo/java-syntax.vim'                                                           " java syntax highlighting
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }                                     " used to search files quickly 
 Plug 'junegunn/fzf.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-surround'
-Plug 'Raimondi/delimitMate'
-"Plug 'itchyny/lightline.vim'         " minmal status bar
-Plug 'mhinz/vim-startify'            " A start menu for vim
-Plug 'vim-airline/vim-airline'
-Plug 'vim-syntastic/syntastic'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'preservim/nerdcommenter'
-Plug 'neoclide/coc.nvim',{'branch':'release'}
-Plug 'ryanoasis/vim-devicons'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}                                  " syntax highlighting for python
+"Plug 'sheerun/vim-polyglot'                                                            " syntax highlighting for many languages, not needed as of now(semshi) 
+"Plug 'tpope/vim-surround'                                                              " autoclosing of brackets, quotes etc
+Plug 'Raimondi/delimitMate'                                                             " autoclosing of quotes, brackets etc
+"Plug 'itchyny/lightline.vim'                                                           " minmal status bar
+Plug 'mhinz/vim-startify'                                                               " A start menu for vim
+Plug 'vim-airline/vim-airline'                                                          " improves status bar
+Plug 'vim-syntastic/syntastic'                                                          " syntax checker
+Plug 'vim-airline/vim-airline-themes'                                                   " sets airline theme
+Plug 'rafi/awesome-vim-colorschemes'                                                    " sets a colorscheme for vim
+Plug 'preservim/nerdcommenter'                                                          " improves code commenting
+Plug 'neoclide/coc.nvim',{'branch':'release'}                                           " code autocomplete engine
+Plug 'ryanoasis/vim-devicons'                                                           " icons for nerdtree, airline
 
 call plug#end()
 
-filetype plugin on
+filetype plugin on                                                                      " runs commands when a specific file type is opened
 
+colorscheme purify                                                                      " sets the colorscheme
+set encoding=utf-8                                                                      " sets the encoding to utf-8
+syntax on                                                                               " turns syntax highlighting on permanently
+set laststatus=2                                                                        " turns status bar on permanently
+set nu rnu                                                                              " relative line numbering
+set clipboard=unnamed                                                                   " public copy/paste register
+set ruler
+set showcmd
+set noswapfile                                                                          " doesn't create swap files
+set noshowmode
+set shortmess+=c
+set omnifunc=syntaxcomplete#Complete
+set backspace=indent,eol,start                                                          " let backspace delete over lines
+set autoindent                                                                          " enable auto indentation of lines
+set smartindent                                                                         " allow vim to best-effort guess the indentation
+set pastetoggle=<F2>                                                                    " enable paste mode
+
+set wildmenu                                                                            " graphical auto complete menu
+set lazyredraw                                                                          " redraws the screne when it needs to
+set showmatch                                                                           " highlights matching brackets
+set incsearch                                                                           " search as characters are entered
+set hlsearch                                                                            " highlights matching searches
+
+let g:syntastic_cpp_compiler = 'clang++'                                                " c++11 support in syntastic
+let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let mapleader = "-"
 let maplocalleader = "\\"
 
-"split navigations
-nnoremap <C-J> <C-W><C-J>
+nnoremap // :noh<return>                                                                " clears highlights
+nnoremap <leader>- ddp                                                                  " moves current line down or up
+nnoremap <leader>_ ddkP
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>                                                " open vimrc in vertical split
+nnoremap <leader>sv :source $MYVIMRC<cr>                                                " update changes into current buffer
+nnoremap <buffer> <localleader>w :set wrap!<cr>                                         " enable or disable line wrapping in current buffer
+nnoremap q <C-V>                                                                        " visual block mode with q
+
+nnoremap <C-J> <C-W><C-J>                                                               " split navigations
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
@@ -40,6 +72,7 @@ let g:startify_lists = [
       \ { 'type': 'files',     'header': ['   Recent']            },
       \ { 'type': 'commands',  'header': ['   Commands']       },
       \ ]
+
 " lightline 
 "let g:lightline = {
 "      \ 'colorscheme': 'purify',
@@ -52,19 +85,16 @@ let g:startify_lists = [
 "      \ },
 "      \ }
 
-colorscheme purify
-
 " NERDTree
-map<C-n> :NERDTreeToggle<CR>
-let g:NERDTreeWinPos = "right"
-let NERDTreeIgnore = ['\.pyc$', '\.class$']
+map<C-n> :NERDTreeToggle<CR>                                                            " toggles nerdtree with ctrl+n
+let g:NERDTreeWinPos = "right"                                                          " makes nerdtree open in the right instead of the left
+let NERDTreeIgnore = ['\.pyc$', '\.class$']                                             " ignores .class and .pyc files
 
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
 
-"Enable folding with the spacebar
-nnoremap <space> za
+nnoremap <space> za                                                                     " enable folding with the spacebar
 
 au BufNewFile,BufRead *.py,*.java,*.cpp,*.c,*.cs,*.rkt,*.h,*.html
     \ set tabstop=4 |
@@ -75,9 +105,6 @@ au BufNewFile,BufRead *.py,*.java,*.cpp,*.c,*.cs,*.rkt,*.h,*.html
     \ set autoindent |
     \ set fileformat=unix |
 
-set encoding=utf-8
-
-syntax on
 
 " air-line
 let g:airline_powerline_fonts = 1
@@ -119,49 +146,6 @@ let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.dirty='⚡'
 
 highlight Comment cterm=italic gui=italic
-
-set laststatus=2
-" set showtabline=2
-
-
-
-set nu rnu " relative line numbering
-set clipboard=unnamed " public copy/paste register
-set ruler
-set showcmd
-set noswapfile " doesn't create swap files
-set noshowmode
-set shortmess+=c
-set omnifunc=syntaxcomplete#Complete
-
-set backspace=indent,eol,start " let backspace delete over lines
-set autoindent " enable auto indentation of lines
-set smartindent " allow vim to best-effort guess the indentation
-set pastetoggle=<F2> " enable paste mode
-
-set wildmenu "graphical auto complete menu
-set lazyredraw "redraws the screne when it needs to
-set showmatch "highlights matching brackets
-set incsearch "search as characters are entered
-set hlsearch "highlights matching searches
-
-"clears highlights
-nnoremap // :noh<return>
-" moves current line down or up
-nnoremap <leader>- ddp
-nnoremap <leader>_ ddkP
-" open vimrc in vertical split
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-" update changes into current buffer
-nnoremap <leader>sv :source $MYVIMRC<cr>
-" enable or disable line wrapping in current buffer
-nnoremap <buffer> <localleader>w :set wrap!<cr>
-"open visual block mode with q
-nnoremap q <C-V>
-" c++11 support in syntastic
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = ' -std=c++11'
-
 
 " run code
 augroup compileandrun

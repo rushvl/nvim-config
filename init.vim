@@ -25,6 +25,7 @@ filetype plugin on                                                              
 colorscheme purify                                                                      " sets the colorscheme
 set encoding=utf-8                                                                      " sets the encoding to utf-8
 syntax on                                                                               " turns syntax highlighting on permanently
+
 set laststatus=2                                                                        " turns status bar on permanently
 set nu rnu                                                                              " relative line numbering
 set clipboard=unnamed                                                                   " public copy/paste register
@@ -39,6 +40,9 @@ set autoindent                                                                  
 set smartindent                                                                         " allow vim to best-effort guess the indentation
 set pastetoggle=<F2>                                                                    " enable paste mode
 
+set foldmethod=indent									" enables folding
+set foldlevel=99
+
 set wildmenu                                                                            " graphical auto complete menu
 set lazyredraw                                                                          " redraws the screne when it needs to
 set showmatch                                                                           " highlights matching brackets
@@ -49,6 +53,18 @@ let g:syntastic_cpp_compiler = 'clang++'                                        
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let mapleader = "-"
 let maplocalleader = "\\"
+let g:python3_host_prog = 'C:\Users\rushi\AppData\Local\Programs\Python\Python39\python.exe'
+let g:NERDTreeWinPos = "right"                                                          " makes nerdtree open in the right instead of the left
+let NERDTreeIgnore = ['\.pyc$', '\.class$']                                             " ignores .class and .pyc files
+let g:startify_lists = [
+      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+      \ { 'type': 'files',     'header': ['   Recent']            },
+      \ { 'type': 'commands',  'header': ['   Commands']       },
+      \ ]
+
+let g:airline_powerline_fonts = 1							" enables powerline fonts
+let g:airline_theme = 'purify'								" sets the colourscheme for airline
+let g:airline#extensions#tabline#enabled = 1						" Automatically displays all buffers when there's only one tab open
 
 nnoremap // :noh<return>                                                                " clears highlights
 nnoremap <leader>- ddp                                                                  " moves current line down or up
@@ -62,16 +78,11 @@ nnoremap <C-J> <C-W><C-J>                                                       
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+nnoremap <space> za                                                                     " enable folding with the spacebar
+map<C-n> :NERDTreeToggle<CR>                                                            " toggles nerdtree with ctrl+n
 
 set splitbelow
 set splitright
-
-" startify
-let g:startify_lists = [
-      \ { 'type': 'sessions',  'header': ['   Sessions']       },
-      \ { 'type': 'files',     'header': ['   Recent']            },
-      \ { 'type': 'commands',  'header': ['   Commands']       },
-      \ ]
 
 " lightline 
 "let g:lightline = {
@@ -84,32 +95,6 @@ let g:startify_lists = [
 "      \   'gitbranch': 'FugitiveHead'
 "      \ },
 "      \ }
-
-" NERDTree
-map<C-n> :NERDTreeToggle<CR>                                                            " toggles nerdtree with ctrl+n
-let g:NERDTreeWinPos = "right"                                                          " makes nerdtree open in the right instead of the left
-let NERDTreeIgnore = ['\.pyc$', '\.class$']                                             " ignores .class and .pyc files
-
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
-
-nnoremap <space> za                                                                     " enable folding with the spacebar
-
-au BufNewFile,BufRead *.py,*.java,*.cpp,*.c,*.cs,*.rkt,*.h,*.html
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=120 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix |
-
-
-" air-line
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'purify'
-let g:airline#extensions#tabline#enabled = 1
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -146,6 +131,15 @@ let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.dirty='⚡'
 
 highlight Comment cterm=italic gui=italic
+
+au BufNewFile,BufRead *.py,*.java,*.cpp,*.c,*.cs,*.rkt,*.h,*.html			" settings when particular filetypes are opened
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=120 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
 
 " run code
 augroup compileandrun
